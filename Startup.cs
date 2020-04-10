@@ -31,6 +31,17 @@ namespace UserManagementBackEnd
 
             services.AddDbContext<UserManagementBackEndContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UserManagementBackEndContext")));
+
+            services.AddCors(options =>
+            {
+                options.AddDefaultPolicy(builder =>
+                    builder.SetIsOriginAllowed(_ => true)
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials());
+            });
+
+            services.AddScoped<ICustomersRepository, CustomersRpository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -41,11 +52,12 @@ namespace UserManagementBackEnd
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

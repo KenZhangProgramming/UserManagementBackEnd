@@ -6,7 +6,7 @@ using UserManagementBackEnd.Models;
 
 namespace UserManagementBackEnd.Data
 {
-    interface ICustomersRepository
+    public interface ICustomersRepository
     {
         Task<List<Customer>> GetCustomersAsync();
         Task<Customer> GetCustomerAsync(int id);

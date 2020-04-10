@@ -5,106 +5,166 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using UserManagementBackEnd.Data;
 using UserManagementBackEnd.Models;
 
+
 namespace UserManagementBackEnd.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("[controller]")]
     public class CustomersController : ControllerBase
     {
-        private readonly UserManagementBackEndContext _context;
+        ICustomersRepository _CustomersRepository;
+        ILogger _Logger;
 
-        public CustomersController(UserManagementBackEndContext context)
+        public CustomersController(ICustomersRepository customersRepo,
+            ILoggerFactory loggerFactory)
         {
-            _context = context;
+            _CustomersRepository = customersRepo;
+            _Logger = loggerFactory.CreateLogger(nameof(CustomersController));
         }
+     
 
-        // GET: api/Customers
+        // GET api/customers
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Customer>>> GetCustomer()
+        [ProducesResponseType(typeof(List<Customer>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> Customers()
         {
-            return await _context.Customer.ToListAsync();
+            try
+            {
+                var customers = await _CustomersRepository.GetCustomersAsync();
+                return Ok(customers);
+            }
+            catch (Exception exp)
+            {
+                _Logger.LogError(exp.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
         }
 
-        // GET: api/Customers/5
-        [HttpGet("{id}")]
-        public async Task<ActionResult<Customer>> GetCustomer(int id)
+        // GET api/customers/page/10/10
+        /*
+        [HttpGet("page/{skip}/{take}")]
+        [ProducesResponseType(typeof(List<Customer>), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> CustomersPage(int skip, int take)
         {
-            var customer = await _context.Customer.FindAsync(id);
-
-            if (customer == null)
+            try
             {
-                return NotFound();
+                var pagingResult = await _CustomersRepository.GetCustomersPageAsync(skip, take);
+                Response.Headers.Add("X-InlineCount", pagingResult.TotalRecords.ToString());
+                return Ok(pagingResult.Records);
             }
+            catch (Exception exp)
+            {
+                _Logger.LogError(exp.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }*/
 
-            return customer;
+        // GET api/customers/5
+        [HttpGet("{id}", Name = "GetCustomerRoute")]
+        [ProducesResponseType(typeof(Customer), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> Customers(int id)
+        {
+            try
+            {
+                var customer = await _CustomersRepository.GetCustomerAsync(id);
+                return Ok(customer);
+            }
+            catch (Exception exp)
+            {
+                _Logger.LogError(exp.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
         }
 
-        // PUT: api/Customers/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutCustomer(int id, Customer customer)
+        // POST api/customers
+        [HttpPost]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 201)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> CreateCustomer([FromBody]Customer customer)
         {
-            if (id != customer.Id)
+            if (!ModelState.IsValid)
             {
-                return BadRequest();
+                return BadRequest(new ApiResponse { Status = false, ModelState = ModelState });
             }
-
-            _context.Entry(customer).State = EntityState.Modified;
 
             try
             {
-                await _context.SaveChangesAsync();
+                var newCustomer = await _CustomersRepository.InsertCustomerAsync(customer);
+                if (newCustomer == null)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return CreatedAtRoute("GetCustomerRoute", new { id = newCustomer.Id },
+                        new ApiResponse { Status = true, Customer = newCustomer });
             }
-            catch (DbUpdateConcurrencyException)
+            catch (Exception exp)
             {
-                if (!CustomerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                _Logger.LogError(exp.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
+        }
+
+        // PUT api/customers/5
+        [HttpPut("{id}")]
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> UpdateCustomer(int id, [FromBody]Customer customer)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(new ApiResponse { Status = false, ModelState = ModelState });
             }
 
-            return NoContent();
+            try
+            {
+                var status = await _CustomersRepository.UpdateCustomerAsync(customer);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true, Customer = customer });
+            }
+            catch (Exception exp)
+            {
+                _Logger.LogError(exp.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
         }
 
-        // POST: api/Customers
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for
-        // more details see https://aka.ms/RazorPagesCRUD.
-        [HttpPost]
-        public async Task<ActionResult<Customer>> PostCustomer(Customer customer)
-        {
-            _context.Customer.Add(customer);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetCustomer", new { id = customer.Id }, customer);
-        }
-
-        // DELETE: api/Customers/5
+        // DELETE api/customers/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Customer>> DeleteCustomer(int id)
+        // [ValidateAntiForgeryToken]
+        [ProducesResponseType(typeof(ApiResponse), 200)]
+        [ProducesResponseType(typeof(ApiResponse), 400)]
+        public async Task<ActionResult> DeleteCustomer(int id)
         {
-            var customer = await _context.Customer.FindAsync(id);
-            if (customer == null)
+            try
             {
-                return NotFound();
+                var status = await _CustomersRepository.DeleteCustomerAsync(id);
+                if (!status)
+                {
+                    return BadRequest(new ApiResponse { Status = false });
+                }
+                return Ok(new ApiResponse { Status = true });
             }
-
-            _context.Customer.Remove(customer);
-            await _context.SaveChangesAsync();
-
-            return customer;
+            catch (Exception exp)
+            {
+                _Logger.LogError(exp.Message);
+                return BadRequest(new ApiResponse { Status = false });
+            }
         }
 
-        private bool CustomerExists(int id)
-        {
-            return _context.Customer.Any(e => e.Id == id);
-        }
     }
 }
+      
+    
+
