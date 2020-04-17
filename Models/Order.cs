@@ -14,6 +14,8 @@ namespace UserManagementBackEnd.Models
         public string Product { get; set; }
         public int Quantity { get; set; }
         public decimal Price { get; set; }
+        public Customer customer { get; set; }
+
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
     }

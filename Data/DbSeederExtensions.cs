@@ -13,11 +13,12 @@ namespace UserManagementBackEnd.Data
         {
             var provinces = GetProvinces();
             var customers = GetCustomers(provinces);
-            //var orders = GetOrders();
+            var orders = GetOrders();
 
             modelBuilder.Entity<Province>().HasData(provinces);
             modelBuilder.Entity<Customer>().HasData(customers);
-            //modelBuilder.Entity<Order>().HasData(orders);
+            modelBuilder.Entity<Order>().HasData(orders);
+
         }
 
         private List<Customer> GetCustomers(List<Province> provinces)
@@ -103,20 +104,18 @@ namespace UserManagementBackEnd.Data
         {
             var orders = new List<Order>
             {
-                new Order {Id = 1 , Product = "Basket", Price = 29.99M, Quantity = 1},
-                new Order {Id = 2 , Product = "Yarn", Price = 9.99M, Quantity = 1},
-                new Order {Id = 3 , Product = "Needes", Price = 5.99M, Quantity = 1},
-                new Order {Id = 4 , Product = "Speakers", Price = 499.99M, Quantity = 1},
-                new Order {Id = 5 , Product = "iPod", Price = 399.99M, Quantity = 1},
-                new Order {Id = 6 , Product = "Table", Price = 329.99M, Quantity = 1},
-                new Order {Id = 7 , Product = "Chair", Price = 129.99M, Quantity = 4},
-                new Order {Id = 8 , Product = "Lamp", Price = 89.99M, Quantity = 5},
-                new Order {Id = 9 , Product = "Call of Duty", Price = 59.99M, Quantity = 1},
-                new Order {Id = 10, Product = "Controller", Price = 49.99M, Quantity = 1},
-                new Order {Id = 11, Product = "Gears of War", Price = 49.99M, Quantity = 1},
-                new Order {Id = 12, Product = "Lego City", Price = 49.99M, Quantity = 1},
-                new Order {Id = 13, Product = "Baseball", Price = 9.99M, Quantity = 5},
-                new Order {Id = 14, Product = "Bat", Price = 19.99M, Quantity = 1}
+                new Order {Id = 1 , Product = "Basket", Price = 29.99M, Quantity = 1, CustomerId = 1},
+                new Order {Id = 2 , Product = "Yarn", Price = 9.99M, Quantity = 1, CustomerId = 2},
+                new Order {Id = 3 , Product = "Needes", Price = 5.99M, Quantity = 1, CustomerId = 3},
+                new Order {Id = 4 , Product = "Speakers", Price = 499.99M, Quantity = 1, CustomerId = 4},
+                new Order {Id = 5 , Product = "iPod", Price = 399.99M, Quantity = 1, CustomerId = 5},
+                new Order {Id = 6 , Product = "Table", Price = 329.99M, Quantity = 1, CustomerId = 6},
+                new Order {Id = 7 , Product = "Chair", Price = 129.99M, Quantity = 4, CustomerId = 7},
+                new Order {Id = 8 , Product = "Lamp", Price = 89.99M, Quantity = 5, CustomerId = 8},
+                new Order {Id = 9 , Product = "Call of Duty", Price = 59.99M, Quantity = 1, CustomerId = 9},
+                new Order {Id = 10, Product = "Controller", Price = 49.99M, Quantity = 1, CustomerId = 10},
+                new Order {Id = 11, Product = "Gears of War", Price = 49.99M, Quantity = 1, CustomerId = 11},
+                new Order {Id = 12, Product = "Lego City", Price = 49.99M, Quantity = 1, CustomerId = 12},
             };
             return orders;
         }
