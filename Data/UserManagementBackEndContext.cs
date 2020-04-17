@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using UserManagementBackEnd.Models;
 
+
 namespace UserManagementBackEnd.Data
 {
     public class UserManagementBackEndContext : DbContext
@@ -15,5 +16,13 @@ namespace UserManagementBackEnd.Data
         }
 
         public DbSet<UserManagementBackEnd.Models.Customer> Customer { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<Order> Province { get; set; }
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            DbSeederExtensions dbSeeding = new DbSeederExtensions(modelBuilder);
+        }
     }
 }
