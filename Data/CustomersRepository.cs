@@ -13,10 +13,18 @@ namespace UserManagementBackEnd.Data
         private readonly UserManagementBackEndContext _Context;
         private readonly ILogger _Logger;
 
+
+        public CustomersRpository(UserManagementBackEndContext context, ILoggerFactory loggerFactory)
+        {
+            _Context = context;
+            _Logger = loggerFactory.CreateLogger("CustomersRepository");
+        }
+
+
         public async Task<List<Customer>> GetCustomersAsync()
         {
-            return await _Context.Customer.OrderBy(c => c.LastName)
-                                 .Include(c => c.Province).ToListAsync();
+            return await _Context.Customer.OrderBy(c => c.LastName).ToListAsync();
+                               
         }
 
         /*
