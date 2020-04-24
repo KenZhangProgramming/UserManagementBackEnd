@@ -23,6 +23,7 @@ namespace UserManagementBackEnd
         }
 
         public IConfiguration Configuration { get; }
+        readonly string allowedOrigins = "allowedOrigin";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -31,14 +32,16 @@ namespace UserManagementBackEnd
 
             services.AddDbContext<UserManagementBackEndContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("UserManagementBackEndContext")));
-
+           
             services.AddCors(options =>
             {
-                options.AddDefaultPolicy(builder =>
-                    builder.SetIsOriginAllowed(_ => true)
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                options.AddPolicy(allowedOrigins,
+                     builder =>
+                     {
+                         builder.WithOrigins("http://localhost:4200")
+                                             .AllowAnyHeader()
+                                             .AllowAnyMethod();
+                     });
             });
 
             services.AddScoped<ICustomersRepository, CustomersRpository>();
@@ -52,12 +55,13 @@ namespace UserManagementBackEnd
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseCors("CorsPolicy");
             app.UseHttpsRedirection();
 
             app.UseRouting();
-            
-            //app.UseAuthorization();
+
+            app.UseCors(allowedOrigins);
+
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

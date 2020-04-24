@@ -13,7 +13,7 @@ using UserManagementBackEnd.Models;
 namespace UserManagementBackEnd.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class CustomersController : ControllerBase
     {
         ICustomersRepository _CustomersRepository;
