@@ -38,6 +38,7 @@ namespace UserManagementBackEnd
                 options.AddPolicy(allowedOrigins,
                      builder =>
                      {
+                         //testing commits!
                          builder.WithOrigins("http://localhost:4200")
                                              .AllowAnyHeader()
                                              .AllowAnyMethod();
