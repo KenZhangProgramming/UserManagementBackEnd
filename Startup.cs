@@ -35,7 +35,6 @@ namespace UserManagementBackEnd
            
             services.AddCors(options =>
             {
-                //test commit
                 options.AddPolicy(allowedOrigins,
                      builder =>
                      {

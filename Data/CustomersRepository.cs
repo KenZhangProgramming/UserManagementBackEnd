@@ -23,8 +23,34 @@ namespace UserManagementBackEnd.Data
 
         public async Task<List<Customer>> GetCustomersAsync()
         {
-            return await _Context.Customer.OrderBy(c => c.LastName).ToListAsync();
-                               
+
+            List<int> customerIds = new List<int>();
+            Dictionary<int, int> orderNumbersDictionary = new Dictionary<int, int>();
+            List<Customer> customers = new List<Customer>();
+
+            customerIds = _Context.Customer.Select(c => c.Id).ToList();
+            orderNumbersDictionary = await this.GetNumberofOrdersAsync(customerIds);
+            customers = await _Context.Customer.OrderBy(c => c.LastName).ToListAsync();
+
+            foreach (Customer c in customers)
+            {
+                c.OrderCount = orderNumbersDictionary[c.Id];
+            }
+
+            return customers;           
+        }
+
+
+        public async Task<Dictionary<int, int>> GetNumberofOrdersAsync(List<int> customerIds)
+        {
+            Dictionary<int, int> orderNumbersDictionary = new Dictionary<int, int>();
+
+            foreach (int id in customerIds)
+            {
+                orderNumbersDictionary[id] = await _Context.Order.Where(o => o.CustomerId == id).CountAsync();
+            }
+            
+            return orderNumbersDictionary;
         }
 
         /*
