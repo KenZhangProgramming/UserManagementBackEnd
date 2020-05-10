@@ -45,6 +45,8 @@ namespace UserManagementBackEnd
             });
 
             services.AddScoped<ICustomersRepository, CustomersRpository>();
+            services.AddScoped<IProvincesRepository, ProvincesRepository>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
