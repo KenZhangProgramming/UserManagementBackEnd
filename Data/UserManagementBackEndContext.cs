@@ -17,7 +17,7 @@ namespace UserManagementBackEnd.Data
 
         public DbSet<UserManagementBackEnd.Models.Customer> Customer { get; set; }
         public DbSet<Order> Order { get; set; }
-        public DbSet<Order> Province { get; set; }
+        public DbSet<Province> Province { get; set; }
 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
