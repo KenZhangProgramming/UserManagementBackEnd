@@ -70,7 +70,7 @@ namespace UserManagementBackEnd.Data
         public async Task<Customer> GetCustomerAsync(int id)
         {
             return await _Context.Customer
-                                 .Include(c => c.Province)
+                                 .Include("Province")
                                  .SingleOrDefaultAsync(c => c.Id == id);
         }
 
