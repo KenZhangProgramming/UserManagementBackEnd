@@ -53,19 +53,19 @@ namespace UserManagementBackEnd.Data
             return orderNumbersDictionary;
         }
 
-        /*
+        
         public async Task<PagingResult<Customer>> GetCustomersPageAsync(int skip, int take)
         {
-            var totalRecords = await _Context.Customers.CountAsync();
-            var customers = await _Context.Customers
+            var totalRecords = await _Context.Customer.CountAsync();
+            var customers = await _Context.Customer
                                  .OrderBy(c => c.LastName)
-                                 .Include(c => c.State)
-                                 .Include(c => c.Orders)
+                                 .Include(c => c.Province)
+                                 //.Include(c => c.Orders)
                                  .Skip(skip)
                                  .Take(take)
                                  .ToListAsync();
             return new PagingResult<Customer>(customers, totalRecords);
-        }*/
+        }
 
         public async Task<Customer> GetCustomerAsync(int id)
         {

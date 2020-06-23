@@ -13,5 +13,6 @@ namespace UserManagementBackEnd.Data
         Task<Customer> InsertCustomerAsync(Customer customer);
         Task<bool> UpdateCustomerAsync(Customer customer);
         Task<bool> DeleteCustomerAsync(int id);
+        Task<PagingResult<Customer>> GetCustomersPageAsync(int skip, int take);
     }
 }

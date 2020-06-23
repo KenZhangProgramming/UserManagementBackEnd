@@ -46,7 +46,6 @@ namespace UserManagementBackEnd.Controllers
         }
 
         // GET api/customers/page/10/10
-        /*
         [HttpGet("page/{skip}/{take}")]
         [ProducesResponseType(typeof(List<Customer>), 200)]
         [ProducesResponseType(typeof(ApiResponse), 400)]
@@ -63,7 +62,7 @@ namespace UserManagementBackEnd.Controllers
                 _Logger.LogError(exp.Message);
                 return BadRequest(new ApiResponse { Status = false });
             }
-        }*/
+        }
 
         // GET api/customers/5
         [HttpGet("{id}", Name = "GetCustomerRoute")]
