@@ -56,14 +56,24 @@ namespace UserManagementBackEnd.Data
         
         public async Task<PagingResult<Customer>> GetCustomersPageAsync(int skip, int take)
         {
+            List<int> customerIds = new List<int>();
+            Dictionary<int, int> orderNumbersDictionary = new Dictionary<int, int>();
+            List<Customer> customers = new List<Customer>();
             var totalRecords = await _Context.Customer.CountAsync();
-            var customers = await _Context.Customer
+            customers = await _Context.Customer
                                  .OrderBy(c => c.LastName)
                                  .Include(c => c.Province)
-                                 //.Include(c => c.Orders)
                                  .Skip(skip)
                                  .Take(take)
                                  .ToListAsync();
+            customerIds = _Context.Customer.Select(c => c.Id).ToList();
+            orderNumbersDictionary = await this.GetNumberofOrdersAsync(customerIds);
+
+            foreach (Customer c in customers)
+            {
+                c.OrderCount = orderNumbersDictionary[c.Id];
+            }
+
             return new PagingResult<Customer>(customers, totalRecords);
         }
 

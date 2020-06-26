@@ -55,6 +55,7 @@ namespace UserManagementBackEnd.Controllers
             {
                 var pagingResult = await _CustomersRepository.GetCustomersPageAsync(skip, take);
                 Response.Headers.Add("X-InlineCount", pagingResult.TotalRecords.ToString());
+                Response.Headers.Add("Access-Control-Expose-Headers", "X-InlineCount");
                 return Ok(pagingResult.Records);
             }
             catch (Exception exp)
