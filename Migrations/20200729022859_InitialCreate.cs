@@ -7,6 +7,22 @@ namespace UserManagementBackEnd.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Quantity = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    CustomerId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Province",
                 columns: table => new
                 {
@@ -69,21 +85,40 @@ namespace UserManagementBackEnd.Migrations
                 });
 
             migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "Id", "Category", "CustomerId", "Name", "Quantity" },
+                values: new object[,]
+                {
+                    { 1, "Daily Item", 1, "Basket", "2lb" },
+                    { 11, "Vegetable", 11, "Cabbage", "1lb" },
+                    { 10, "Meat", 10, "Chicken Meat", "4lb" },
+                    { 9, "Meat", 9, "Moose Meat", "8lb" },
+                    { 8, "Meat", 8, "Deer Meat", "7lb" },
+                    { 7, "Meat", 7, "Goose Meat", "6lb" },
+                    { 12, "Fruit", 12, "Apple", "1lb" },
+                    { 5, "Meat", 5, "Bass Meat", "5lb" },
+                    { 4, "Meat", 4, "Perch Meat", "3lb" },
+                    { 3, "Daily Item", 3, "Needles", "1lb" },
+                    { 2, "Daily Item", 2, "Yarn", "2lb" },
+                    { 6, "Meat", 6, "Walleye Meat", "1lb" }
+                });
+
+            migrationBuilder.InsertData(
                 table: "Province",
                 columns: new[] { "Id", "Abbreviation", "Name" },
                 values: new object[,]
                 {
-                    { 1, "BC", "British Columbia" },
-                    { 2, "ON", "Ontario" },
-                    { 3, "QC", "Quebec" },
-                    { 4, "AB", "Alberta" },
-                    { 5, "MB", "Manitoba" },
-                    { 6, "YT", "Yukon" },
-                    { 7, "NT", "Northwest Territories" },
-                    { 8, "NB", "New Brunswick" },
-                    { 9, "NU", "Nunavut" },
                     { 10, "NJ", "Newfoundland and Labrador" },
+                    { 9, "NU", "Nunavut" },
+                    { 8, "NB", "New Brunswick" },
+                    { 7, "NT", "Northwest Territories" },
+                    { 6, "YT", "Yukon" },
+                    { 4, "AB", "Alberta" },
+                    { 3, "QC", "Quebec" },
+                    { 2, "ON", "Ontario" },
+                    { 1, "BC", "British Columbia" },
                     { 11, "NS", "Nova Scotia" },
+                    { 5, "MB", "Manitoba" },
                     { 12, "PE", "Prince Edward Island" }
                 });
 
@@ -140,6 +175,9 @@ namespace UserManagementBackEnd.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Order");
+
+            migrationBuilder.DropTable(
+                name: "Product");
 
             migrationBuilder.DropTable(
                 name: "Customer");

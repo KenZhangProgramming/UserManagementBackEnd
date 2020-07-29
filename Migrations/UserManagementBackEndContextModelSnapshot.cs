@@ -326,6 +326,128 @@ namespace UserManagementBackEnd.Migrations
                         });
                 });
 
+            modelBuilder.Entity("UserManagementBackEnd.Models.Product", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Category")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("CustomerId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Quantity")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Product");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = "Daily Item",
+                            CustomerId = 1,
+                            Name = "Basket",
+                            Quantity = "2lb"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Daily Item",
+                            CustomerId = 2,
+                            Name = "Yarn",
+                            Quantity = "2lb"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Category = "Daily Item",
+                            CustomerId = 3,
+                            Name = "Needles",
+                            Quantity = "1lb"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Category = "Meat",
+                            CustomerId = 4,
+                            Name = "Perch Meat",
+                            Quantity = "3lb"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Category = "Meat",
+                            CustomerId = 5,
+                            Name = "Bass Meat",
+                            Quantity = "5lb"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Category = "Meat",
+                            CustomerId = 6,
+                            Name = "Walleye Meat",
+                            Quantity = "1lb"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Category = "Meat",
+                            CustomerId = 7,
+                            Name = "Goose Meat",
+                            Quantity = "6lb"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Category = "Meat",
+                            CustomerId = 8,
+                            Name = "Deer Meat",
+                            Quantity = "7lb"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Category = "Meat",
+                            CustomerId = 9,
+                            Name = "Moose Meat",
+                            Quantity = "8lb"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Category = "Meat",
+                            CustomerId = 10,
+                            Name = "Chicken Meat",
+                            Quantity = "4lb"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Category = "Vegetable",
+                            CustomerId = 11,
+                            Name = "Cabbage",
+                            Quantity = "1lb"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Category = "Fruit",
+                            CustomerId = 12,
+                            Name = "Apple",
+                            Quantity = "1lb"
+                        });
+                });
+
             modelBuilder.Entity("UserManagementBackEnd.Models.Province", b =>
                 {
                     b.Property<int>("Id")
