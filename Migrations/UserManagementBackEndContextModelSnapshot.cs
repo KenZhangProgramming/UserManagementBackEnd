@@ -347,6 +347,8 @@ namespace UserManagementBackEnd.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CustomerId");
+
                     b.ToTable("Product");
 
                     b.HasData(
@@ -362,7 +364,7 @@ namespace UserManagementBackEnd.Migrations
                         {
                             Id = 2,
                             Category = "Daily Item",
-                            CustomerId = 2,
+                            CustomerId = 1,
                             Name = "Yarn",
                             Quantity = "2lb"
                         },
@@ -370,7 +372,7 @@ namespace UserManagementBackEnd.Migrations
                         {
                             Id = 3,
                             Category = "Daily Item",
-                            CustomerId = 3,
+                            CustomerId = 1,
                             Name = "Needles",
                             Quantity = "1lb"
                         },
@@ -378,7 +380,7 @@ namespace UserManagementBackEnd.Migrations
                         {
                             Id = 4,
                             Category = "Meat",
-                            CustomerId = 4,
+                            CustomerId = 1,
                             Name = "Perch Meat",
                             Quantity = "3lb"
                         },
@@ -386,7 +388,7 @@ namespace UserManagementBackEnd.Migrations
                         {
                             Id = 5,
                             Category = "Meat",
-                            CustomerId = 5,
+                            CustomerId = 1,
                             Name = "Bass Meat",
                             Quantity = "5lb"
                         },
@@ -394,7 +396,7 @@ namespace UserManagementBackEnd.Migrations
                         {
                             Id = 6,
                             Category = "Meat",
-                            CustomerId = 6,
+                            CustomerId = 1,
                             Name = "Walleye Meat",
                             Quantity = "1lb"
                         },
@@ -553,6 +555,15 @@ namespace UserManagementBackEnd.Migrations
                 {
                     b.HasOne("UserManagementBackEnd.Models.Customer", "customer")
                         .WithMany("Orders")
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("UserManagementBackEnd.Models.Product", b =>
+                {
+                    b.HasOne("UserManagementBackEnd.Models.Customer", "Customer")
+                        .WithMany("Products")
                         .HasForeignKey("CustomerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

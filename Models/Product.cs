@@ -16,5 +16,6 @@ namespace UserManagementBackEnd.Models
         public string Category { get; set; }
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
+        public Customer Customer { get; set; }
     }
 }

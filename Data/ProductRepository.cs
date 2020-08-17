@@ -20,10 +20,10 @@ namespace UserManagementBackEnd.Data
             _Logger = loggerFactory.CreateLogger("ProductsRepository");
         }
 
-
+       
         public async Task<List<Product>> GetProductsAsync()
         {
-
+            return null;
         }
     }
 }

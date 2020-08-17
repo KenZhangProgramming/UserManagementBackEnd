@@ -7,22 +7,6 @@ namespace UserManagementBackEnd.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Product",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
-                    Quantity = table.Column<string>(nullable: true),
-                    Category = table.Column<string>(nullable: true),
-                    CustomerId = table.Column<int>(nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Product", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Province",
                 columns: table => new
                 {
@@ -84,23 +68,26 @@ namespace UserManagementBackEnd.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.InsertData(
-                table: "Product",
-                columns: new[] { "Id", "Category", "CustomerId", "Name", "Quantity" },
-                values: new object[,]
+            migrationBuilder.CreateTable(
+                name: "Product",
+                columns: table => new
                 {
-                    { 1, "Daily Item", 1, "Basket", "2lb" },
-                    { 11, "Vegetable", 11, "Cabbage", "1lb" },
-                    { 10, "Meat", 10, "Chicken Meat", "4lb" },
-                    { 9, "Meat", 9, "Moose Meat", "8lb" },
-                    { 8, "Meat", 8, "Deer Meat", "7lb" },
-                    { 7, "Meat", 7, "Goose Meat", "6lb" },
-                    { 12, "Fruit", 12, "Apple", "1lb" },
-                    { 5, "Meat", 5, "Bass Meat", "5lb" },
-                    { 4, "Meat", 4, "Perch Meat", "3lb" },
-                    { 3, "Daily Item", 3, "Needles", "1lb" },
-                    { 2, "Daily Item", 2, "Yarn", "2lb" },
-                    { 6, "Meat", 6, "Walleye Meat", "1lb" }
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(nullable: true),
+                    Quantity = table.Column<string>(nullable: true),
+                    Category = table.Column<string>(nullable: true),
+                    CustomerId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Product", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Product_Customer_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customer",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.InsertData(
@@ -108,17 +95,17 @@ namespace UserManagementBackEnd.Migrations
                 columns: new[] { "Id", "Abbreviation", "Name" },
                 values: new object[,]
                 {
-                    { 10, "NJ", "Newfoundland and Labrador" },
-                    { 9, "NU", "Nunavut" },
-                    { 8, "NB", "New Brunswick" },
-                    { 7, "NT", "Northwest Territories" },
-                    { 6, "YT", "Yukon" },
-                    { 4, "AB", "Alberta" },
-                    { 3, "QC", "Quebec" },
-                    { 2, "ON", "Ontario" },
                     { 1, "BC", "British Columbia" },
-                    { 11, "NS", "Nova Scotia" },
+                    { 2, "ON", "Ontario" },
+                    { 3, "QC", "Quebec" },
+                    { 4, "AB", "Alberta" },
                     { 5, "MB", "Manitoba" },
+                    { 6, "YT", "Yukon" },
+                    { 7, "NT", "Northwest Territories" },
+                    { 8, "NB", "New Brunswick" },
+                    { 9, "NU", "Nunavut" },
+                    { 10, "NJ", "Newfoundland and Labrador" },
+                    { 11, "NS", "Nova Scotia" },
                     { 12, "PE", "Prince Edward Island" }
                 });
 
@@ -147,17 +134,36 @@ namespace UserManagementBackEnd.Migrations
                 values: new object[,]
                 {
                     { 1, 1, 29.99m, "Basket", 1 },
-                    { 2, 2, 9.99m, "Yarn", 1 },
-                    { 3, 3, 5.99m, "Needes", 1 },
-                    { 4, 4, 499.99m, "Speakers", 1 },
-                    { 5, 5, 399.99m, "iPod", 1 },
-                    { 6, 6, 329.99m, "Table", 1 },
-                    { 7, 7, 129.99m, "Chair", 4 },
-                    { 8, 8, 89.99m, "Lamp", 5 },
-                    { 9, 9, 59.99m, "Call of Duty", 1 },
-                    { 10, 10, 49.99m, "Controller", 1 },
                     { 11, 11, 49.99m, "Gears of War", 1 },
-                    { 12, 12, 49.99m, "Lego City", 1 }
+                    { 10, 10, 49.99m, "Controller", 1 },
+                    { 9, 9, 59.99m, "Call of Duty", 1 },
+                    { 8, 8, 89.99m, "Lamp", 5 },
+                    { 7, 7, 129.99m, "Chair", 4 },
+                    { 12, 12, 49.99m, "Lego City", 1 },
+                    { 5, 5, 399.99m, "iPod", 1 },
+                    { 4, 4, 499.99m, "Speakers", 1 },
+                    { 6, 6, 329.99m, "Table", 1 },
+                    { 2, 2, 9.99m, "Yarn", 1 },
+                    { 3, 3, 5.99m, "Needes", 1 }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Product",
+                columns: new[] { "Id", "Category", "CustomerId", "Name", "Quantity" },
+                values: new object[,]
+                {
+                    { 6, "Meat", 1, "Walleye Meat", "1lb" },
+                    { 5, "Meat", 1, "Bass Meat", "5lb" },
+                    { 7, "Meat", 7, "Goose Meat", "6lb" },
+                    { 4, "Meat", 1, "Perch Meat", "3lb" },
+                    { 8, "Meat", 8, "Deer Meat", "7lb" },
+                    { 3, "Daily Item", 1, "Needles", "1lb" },
+                    { 9, "Meat", 9, "Moose Meat", "8lb" },
+                    { 2, "Daily Item", 1, "Yarn", "2lb" },
+                    { 10, "Meat", 10, "Chicken Meat", "4lb" },
+                    { 1, "Daily Item", 1, "Basket", "2lb" },
+                    { 11, "Vegetable", 11, "Cabbage", "1lb" },
+                    { 12, "Fruit", 12, "Apple", "1lb" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -168,6 +174,11 @@ namespace UserManagementBackEnd.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Order_CustomerId",
                 table: "Order",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Product_CustomerId",
+                table: "Product",
                 column: "CustomerId");
         }
 

@@ -21,5 +21,6 @@ namespace UserManagementBackEnd.Models
         public string Gender { get; set; }
         public int OrderCount { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<Product> Products { get; set; }
     }
 }

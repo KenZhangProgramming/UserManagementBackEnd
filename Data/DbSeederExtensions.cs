@@ -127,11 +127,11 @@ namespace UserManagementBackEnd.Data
             var products = new List<Product>
             {
                 new Product {Id = 1 , Name = "Basket", Quantity = "2lb", Category = "Daily Item", CustomerId = 1},
-                new Product {Id = 2 , Name = "Yarn", Quantity ="2lb", Category = "Daily Item", CustomerId = 2},
-                new Product {Id = 3 , Name = "Needles", Quantity = "1lb", Category = "Daily Item", CustomerId = 3},
-                new Product {Id = 4 , Name = "Perch Meat", Quantity = "3lb", Category = "Meat", CustomerId = 4},
-                new Product {Id = 5 , Name = "Bass Meat", Quantity = "5lb", Category = "Meat", CustomerId = 5},
-                new Product {Id = 6 , Name = "Walleye Meat", Quantity = "1lb", Category = "Meat", CustomerId = 6},
+                new Product {Id = 2 , Name = "Yarn", Quantity ="2lb", Category = "Daily Item", CustomerId = 1},
+                new Product {Id = 3 , Name = "Needles", Quantity = "1lb", Category = "Daily Item", CustomerId = 1},
+                new Product {Id = 4 , Name = "Perch Meat", Quantity = "3lb", Category = "Meat", CustomerId = 1},
+                new Product {Id = 5 , Name = "Bass Meat", Quantity = "5lb", Category = "Meat", CustomerId = 1},
+                new Product {Id = 6 , Name = "Walleye Meat", Quantity = "1lb", Category = "Meat", CustomerId = 1},
                 new Product {Id = 7 , Name = "Goose Meat", Quantity = "6lb", Category = "Meat", CustomerId = 7},
                 new Product {Id = 8 , Name = "Deer Meat", Quantity = "7lb", Category = "Meat", CustomerId = 8},
                 new Product {Id = 9 , Name = "Moose Meat", Quantity = "8lb", Category = "Meat", CustomerId = 9},

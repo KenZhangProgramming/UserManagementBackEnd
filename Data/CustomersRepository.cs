@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using UserManagementBackEnd.Models;
@@ -79,9 +80,44 @@ namespace UserManagementBackEnd.Data
 
         public async Task<Customer> GetCustomerAsync(int id)
         {
-            return await _Context.Customer
-                                 .Include("Province")
-                                 .SingleOrDefaultAsync(c => c.Id == id);
+            Customer returnCustomer;
+
+            try
+            {
+                returnCustomer = await (from c in _Context.Customer
+                                        where c.Id == id
+                                        join product in _Context.Product
+                                        on c.Id equals product.CustomerId
+                                        join province in _Context.Province
+                                        on c.ProvinceId equals province.Id
+                                        select
+                                           (
+                                                new Customer
+                                                {
+                                                    Id = id,
+                                                    FirstName = c.FirstName,
+                                                    LastName =  c.LastName,
+                                                    Email = c.Email,
+                                                    Address = c.Address,
+                                                    Province = c.Province,
+                                                    ProvinceId = c.ProvinceId,
+                                                    Zip = c.Zip,
+                                                    Gender = c.Gender,
+                                                    OrderCount = c.OrderCount,
+                                                    Orders = c.Orders,
+                                                    Products = c.Products
+                                                }
+                                           )
+                                   ).Distinct().FirstOrDefaultAsync();
+
+
+                return returnCustomer;
+            }
+            catch (Exception exp)
+            {
+                _Logger.LogError($"Error in {nameof(GetCustomerAsync)}: " + exp.Message);
+                return null;
+            }
         }
 
         public async Task<Customer> InsertCustomerAsync(Customer customer)
